@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import type { Pokemon, PokeListItem} from "../types/pokemon.ts";
 import { PokemonTile } from "./PokemonTile.tsx";
+import { SearchBar } from "./SearchBar.tsx";
+import { Header } from "./Header.tsx";
+
 
 export const MainPage = () => {
 
     const [allPokemon, setAllPokemon] = useState<Pokemon[]>([])
     const [visiblePokemon, setVisiblePokemon] = useState<Pokemon[]>([]);
+    const [searchValue, setSearchValue] = useState<string>("")
 
     useEffect(() => {
         const fetchAll = async () => {
@@ -28,15 +32,28 @@ export const MainPage = () => {
                 })
             );
 
-            setAllPokemon(fullPokemon);
+            const visiblePokemon = fullPokemon.filter((p) =>
+                p.name.toLowerCase().includes(searchValue.toLowerCase())
+            );
+
+            setVisiblePokemon(visiblePokemon)
         };
 
         fetchAll();
-    }, []);
+    }, [searchValue]);
 
     return (
-        <div className="w-screen h-screen bg-[#121212] text-white">
-            {allPokemon.map((p) => (
+        <div className="w-full h-full bg-[#121212] text-white">
+
+            <Header/>
+
+            <SearchBar
+                onSearch={(value) => {
+                    setSearchValue(value);
+                }}
+            />
+
+            {visiblePokemon.map((p) => (
                 <PokemonTile key={p.id} id={p.id} name={p.name} image={p.image} types={p.types}/>
             ))}
         </div>
