@@ -16,7 +16,7 @@ export const SearchBar = ({ onSearch }: SearchBarProps) => {
                 onKeyUp={() => {
                     onSearch(value);
                 }}
-                className="rounded-full p-2 w-200 bg-[#1e1e1e] outline-none mt-4"
+                className="rounded-full p-2 w-200 bg-[#1e1e1e] outline-none mt-4 mb-8"
             />
         </div>
     );

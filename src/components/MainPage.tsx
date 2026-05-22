@@ -3,10 +3,13 @@ import type { Pokemon, PokeListItem } from "../types/pokemon.ts";
 import { PokemonTile } from "./PokemonTile.tsx";
 import { SearchBar } from "./SearchBar.tsx";
 import { Header } from "./Header.tsx";
+import { TypeFilter } from "./TypeFilter.tsx";
+import { LoadButton } from "./LoadButton.tsx";
 
 export const MainPage = () => {
     const [allPokemon, setAllPokemon] = useState<Pokemon[]>([]);
     const [searchValue, setSearchValue] = useState<string>("");
+    const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(true);
 
@@ -45,9 +48,24 @@ export const MainPage = () => {
         fetchAll();
     }, []);
 
-    const filteredPokemon = allPokemon.filter((p) =>
-        p.name.toLowerCase().includes(searchValue.toLowerCase())
-    );
+    const filteredPokemon = allPokemon.filter((p) => {
+        const matchesName = p.name
+            .toLowerCase()
+            .includes(searchValue.toLowerCase());
+        const matchesType =
+            selectedTypes.length === 0 ||
+            p.types.some((t) => selectedTypes.includes(t));
+        return matchesName && matchesType;
+    });
+
+    const toggleType = (type: string) => {
+        setSelectedTypes((prev) =>
+            prev.includes(type)
+                ? prev.filter((t) => t !== type)
+                : [...prev, type]
+        );
+        setPage(1);
+    };
 
     const visiblePokemon = filteredPokemon.slice(0, page * limit);
 
@@ -72,6 +90,8 @@ export const MainPage = () => {
                 }}
             />
 
+            <TypeFilter selectedTypes={selectedTypes} onToggle={toggleType} />
+
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 p-4 mx-48">
                 {visiblePokemon.map((p) => (
                     <PokemonTile
@@ -84,20 +104,8 @@ export const MainPage = () => {
                 ))}
             </div>
 
-            <div className="flex justify-center pb-8">
-                {loading ? (
-                    <p className="text-gray-400">Loading...</p>
-                ) : (
-                    visiblePokemon.length < filteredPokemon.length && (
-                        <button
-                            onClick={handleLoadMore}
-                            className="px-4 py-2 bg-orange-500 rounded-xl hover:bg-orange-600"
-                        >
-                            Load more
-                        </button>
-                    )
-                )}
-            </div>
+
+            <LoadButton loading={loading} handleLoadMore={handleLoadMore} areMorePokemon={visiblePokemon.length < filteredPokemon.length}/>
         </div>
     );
 };
