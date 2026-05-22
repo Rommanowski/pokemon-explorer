@@ -37,6 +37,8 @@ export const PokemonTile = ({ id, name, image, types }: Pokemon) => {
                     src={image}
                     alt=""
                     aria-hidden="true"
+                    loading="lazy"
+                    decoding="async"
                     className="relative w-28 h-28 object-contain"
                 />
 
