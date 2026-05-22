@@ -24,6 +24,7 @@ export const TypeFilterPill = ({ type, selected, onClick }: TypeFilterPillProps)
                 cursor-pointer
                 transition
                 ${selected ? "ring-2 ring-white" : "ring-1 ring-transparent"}
+                hover:ring-2 hover:ring-white
             `}
         >
             {type}
