@@ -7,7 +7,10 @@ type PokemonGridProps = {
 
 export const PokemonGrid = ({ pokemons }: PokemonGridProps) => {
     return (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 p-4 mx-48">
+        <ul
+            aria-label="Pokémon list"
+            className="grid grid-cols-2 md:grid-cols-3 gap-4 p-4 mx-48 list-none"
+        >
             {pokemons.map((p) => (
                 <PokemonTile
                     key={p.id}
@@ -17,6 +20,6 @@ export const PokemonGrid = ({ pokemons }: PokemonGridProps) => {
                     types={p.types}
                 />
             ))}
-        </div>
+        </ul>
     );
 };

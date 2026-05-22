@@ -47,22 +47,29 @@ export const MainPage = () => {
         <div className="min-h-screen w-full bg-[#121212] text-white">
             <Header />
 
-            <SearchBar
-                onSearch={(value) => {
-                    setSearchValue(value);
-                    setPage(1);
-                }}
-            />
+            <main>
+                <SearchBar
+                    onSearch={(value) => {
+                        setSearchValue(value);
+                        setPage(1);
+                    }}
+                />
 
-            <TypeFilter selectedTypes={selectedTypes} onToggle={toggleType} />
+                <TypeFilter
+                    selectedTypes={selectedTypes}
+                    onToggle={toggleType}
+                />
 
-            <PokemonGrid pokemons={visiblePokemon} />
+                <PokemonGrid pokemons={visiblePokemon} />
 
-            <LoadButton
-                loading={loading}
-                handleLoadMore={handleLoadMore}
-                areMorePokemon={visiblePokemon.length < filteredPokemon.length}
-            />
+                <LoadButton
+                    loading={loading}
+                    handleLoadMore={handleLoadMore}
+                    areMorePokemon={
+                        visiblePokemon.length < filteredPokemon.length
+                    }
+                />
+            </main>
         </div>
     );
 };

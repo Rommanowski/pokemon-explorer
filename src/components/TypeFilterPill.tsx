@@ -11,7 +11,10 @@ export const TypeFilterPill = ({ type, selected, onClick }: TypeFilterPillProps)
 
     return (
         <button
+            type="button"
             onClick={onClick}
+            aria-pressed={selected}
+            aria-label={`Filter by ${type} type`}
             style={{ backgroundColor: color }}
             className={`
                 px-3 py-1

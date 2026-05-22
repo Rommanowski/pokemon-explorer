@@ -8,10 +8,15 @@ export const SearchBar = ({ onSearch }: SearchBarProps) => {
     const [value, setValue] = useState("");
 
     return (
-        <div className="flex justify-center">
+        <div role="search" className="flex justify-center">
+            <label htmlFor="pokemon-search" className="sr-only">
+                Search Pokémon by name
+            </label>
             <input
-                type="text"
+                id="pokemon-search"
+                type="search"
                 value={value}
+                placeholder="Search Pokémon..."
                 onChange={(e) => setValue(e.target.value)}
                 onKeyUp={() => {
                     onSearch(value);

@@ -8,7 +8,11 @@ type TypeFilterProps = {
 
 export const TypeFilter = ({ selectedTypes, onToggle }: TypeFilterProps) => {
     return (
-        <div className="flex flex-wrap gap-2 px-4 pb-4 justify-center">
+        <div
+            role="group"
+            aria-label="Filter Pokémon by type"
+            className="flex flex-wrap gap-2 px-4 pb-4 justify-center"
+        >
             {Object.keys(typeColors).map((type) => (
                 <TypeFilterPill
                     key={type}
