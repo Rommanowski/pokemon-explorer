@@ -13,10 +13,8 @@ export const SearchBar = ({ onSearch }: SearchBarProps) => {
                 type="text"
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
-                onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                        onSearch(value);
-                    }
+                onKeyUp={() => {
+                    onSearch(value);
                 }}
                 className="rounded-full p-2 w-200 bg-[#1e1e1e] outline-none mt-4"
             />
