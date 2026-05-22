@@ -8,32 +8,38 @@ export const MainPage = () => {
     const [allPokemon, setAllPokemon] = useState<Pokemon[]>([]);
     const [searchValue, setSearchValue] = useState<string>("");
     const [page, setPage] = useState(1);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const limit = 24;
 
     useEffect(() => {
         const fetchAll = async () => {
-            const res = await fetch(
-                "https://pokeapi.co/api/v2/pokemon?limit=2000"
-            );
-            const data: { results: PokeListItem[] } = await res.json();
+            try {
+                setLoading(true);
 
-            const fullPokemon: Pokemon[] = await Promise.all(
-                data.results.map(async (p) => {
-                    const detailRes = await fetch(p.url);
-                    const detail = await detailRes.json();
+                const res = await fetch(
+                    "https://pokeapi.co/api/v2/pokemon?limit=2000"
+                );
+                const data: { results: PokeListItem[] } = await res.json();
 
-                    return {
-                        id: detail.id,
-                        name: detail.name,
-                        image: detail.sprites.front_default,
-                        types: detail.types.map((t: any) => t.type.name),
-                    };
-                })
-            );
+                const fullPokemon: Pokemon[] = await Promise.all(
+                    data.results.map(async (p) => {
+                        const detailRes = await fetch(p.url);
+                        const detail = await detailRes.json();
 
-            setAllPokemon(fullPokemon);
+                        return {
+                            id: detail.id,
+                            name: detail.name,
+                            image: detail.sprites.other["official-artwork"].front_default,
+                            types: detail.types.map((t: any) => t.type.name),
+                        };
+                    })
+                );
+
+                setAllPokemon(fullPokemon);
+            } finally {
+                setLoading(false);
+            }
         };
 
         fetchAll();
@@ -44,6 +50,7 @@ export const MainPage = () => {
     );
 
     const visiblePokemon = filteredPokemon.slice(0, page * limit);
+
 
     const handleLoadMore = () => {
         setLoading(true);
@@ -65,7 +72,7 @@ export const MainPage = () => {
                 }}
             />
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 p-4 mx-48">
                 {visiblePokemon.map((p) => (
                     <PokemonTile
                         key={p.id}
